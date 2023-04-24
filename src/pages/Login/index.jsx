@@ -9,9 +9,11 @@ function LoginData() {
    )
 }
 function Login(props) {
+   console.log(props);
    return (
       <div className='form'>
          登录页面{ a }
+         <LoginData></LoginData>
       </div>
    )
 }

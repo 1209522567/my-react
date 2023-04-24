@@ -8,32 +8,24 @@ import RouteList from "./pages";
 
 const renderRouter = (routerList) => {
    return routerList.map((item) => {
-      const { path, exact, noAuth, children } = item;
+      const { path, exact, noAuth, children, title } = item;
       const token = localStorage.getItem('token')
       if (!noAuth && !token) return <Route key={ "/login" } path="*" element={<Navigate to="/login" />} />;
-      else {
-         if (token && path === "/login") {
-            return (
-               <Route key={ "/" } path="*" element={<Navigate to="/" />} />
-            )
-         }
-         return <Route
-            key={path}
-            exact={exact}
-            path={path}
-            element={<item.component />}
-         >
-            {!!children && children.map(i => {
-                  return <Route
-                     key={i.path}
-                     exact={i.exact}
-                     path={i.path}
-                     element={<i.component />}
-                  />
-            })}
-         </Route >;
-      }
-      
+      return <Route
+         key={path}
+         exact={exact}
+         path={path}
+         element={<item.component title="title" />}
+      >
+         {!!children && children.map(i => {
+               return <Route
+                  key={i.path}
+                  exact={i.exact}
+                  path={i.path}
+                  element={<i.component />}
+               />
+         })}
+      </Route >;
    });
 };
 
@@ -43,7 +35,6 @@ function RoutesList() {
          <React.Suspense fallback={<Loading />}>
             <Routes>
                { renderRouter(RouteList) }
-               < Route path="*" element={ <NotFound to="/login" /> } />
             </Routes>
          </React.Suspense>
       </Router>
